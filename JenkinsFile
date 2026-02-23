@@ -8,10 +8,16 @@ pipeline {
             }
         }
 
-        stage('Run App Test') {
+        stage('Verify App Starts') {
             steps {
                 bat 'node index.js'
             }
+        }
+    }
+
+    post {
+        always {
+            echo "Pipeline completed."
         }
     }
 }
