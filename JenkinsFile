@@ -2,12 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/pallavi0304aws/product-node-app.git'
-            }
-        }
-
         stage('Install Dependencies') {
             steps {
                 sh 'npm install'
@@ -21,5 +15,3 @@ pipeline {
         }
     }
 }
-
-Streaming interrupted. Waiting for the complete message...
