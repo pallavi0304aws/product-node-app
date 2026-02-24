@@ -1,21 +1,13 @@
-version: 0.2
+echo Logging into Amazon ECR...
 
-env:
-  variables:
-    REPOSITORY_URI: <your-ecr-uri>
+aws ecr get-login-password --region ap-south-1 \
+| docker login --username AWS --password-stdin 500766169087.dkr.ecr.ap-south-1.amazonaws.com
 
-phases:
-  install:
-    runtime-versions:
-      nodejs: 18
-    commands:
-      - npm install
+echo Build Docker image
+docker build -t product-node-app .
 
-  build:
-    commands:
-      - docker build -t product-node-app .
-      - docker tag product-node-app:latest $REPOSITORY_URI:latest
+echo Tag image
+docker tag product-node-app:latest $REPOSITORY_URI:latest
 
-  post_build:
-    commands:
-      - docker push $REPOSITORY_URI:latest
+echo Push image
+docker push $REPOSITORY_URI:latest
