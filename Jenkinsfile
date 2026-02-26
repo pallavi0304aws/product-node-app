@@ -2,20 +2,27 @@ pipeline {
     agent any
 
     stages {
+
+        stage('Checkout Code') {
+            steps {
+                checkout scm
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
                 sh '''
-                  source ~/.bash_profile   # Load your shell environment
-                  echo "PATH after source: $PATH"
-                  npm --version
-                  npm install
+                  /usr/local/bin/npm --version
+                  /usr/local/bin/npm install
                 '''
             }
         }
 
         stage('Build / Test') {
             steps {
-                sh 'echo Application build successful'
+                sh '''
+                  echo "Application build successful"
+                '''
             }
         }
     }
