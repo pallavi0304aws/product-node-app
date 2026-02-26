@@ -1,21 +1,18 @@
 pipeline {
-    agent any
+    agent {
+        docker { image 'node:18' }
+    }
 
     stages {
         stage('Install Dependencies') {
             steps {
-                // Use the configured NodeJS tool
-                nodejs(nodeJSInstallationName: 'Node_16') {
-                    sh 'npm install'
-                }
+                sh 'npm install'
             }
         }
 
         stage('Run Tests / Scripts') {
             steps {
-                nodejs(nodeJSInstallationName: 'Node_16') {
-                    sh 'echo Application build successful'
-                }
+                sh 'echo Application build successful'
             }
         }
     }
