@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        docker { image 'node:18' }
-    }
+    agent any
 
     stages {
         stage('Install Dependencies') {
@@ -9,8 +7,7 @@ pipeline {
                 sh 'npm install'
             }
         }
-
-        stage('Run Tests / Scripts') {
+        stage('Build / Test') {
             steps {
                 sh 'echo Application build successful'
             }
@@ -23,9 +20,6 @@ pipeline {
         }
         failure {
             echo '❌ PIPELINE FAILED!'
-        }
-        always {
-            echo 'Pipeline execution finished.'
         }
     }
 }
