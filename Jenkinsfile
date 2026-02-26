@@ -1,17 +1,28 @@
-
 pipeline {
     agent any
 
     stages {
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                script {
+                    if (isUnix()) {
+                        sh 'npm install'
+                    } else {
+                        bat 'npm install'
+                    }
+                }
             }
         }
-
-        stage('Run Test Script') {
+        
+        stage('Run Tests / Scripts') {
             steps {
-                sh 'echo Application build successful'
+                script {
+                    if (isUnix()) {
+                        sh 'echo Application build successful'
+                    } else {
+                        bat 'echo Application build successful'
+                    }
+                }
             }
         }
     }
