@@ -1,20 +1,24 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs 'Node18'
-    }
-
     stages {
         stage('Install Dependencies') {
             steps {
-                sh 'npm install'
+                sh '''
+                    echo "Checking npm availability..."
+                    npm --version  # Should show npm version
+                    npm install     # Install dependencies
+                '''
             }
         }
+
         stage('Build / Test') {
             steps {
-                sh 'npm test || echo "No tests"'
-                sh 'echo Application build successful'
+                sh '''
+                    echo "Running build / test..."
+                    npm test || echo "No tests defined"
+                    echo "Application build successful"
+                '''
             }
         }
     }
