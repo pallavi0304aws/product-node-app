@@ -5,13 +5,13 @@ pipeline {
     stages {
         stage('Install Dependencies') {
             steps {
-                bat 'npm install'
+                sh 'npm install'
             }
         }
 
         stage('Run Test Script') {
             steps {
-                bat 'echo Application build successful'
+                sh 'echo Application build successful'
             }
         }
     }
