@@ -13,11 +13,10 @@ commands:
 
 post_build:
 commands:
-- echo Tagging Docker image...
+- echo Tagging image...
 - docker tag product-node-app:latest $REPOSITORY_URI:latest
-- echo Pushing Docker image to ECR...
+- echo Pushing image...
 - docker push $REPOSITORY_URI:latest
-- echo Build completed successfully
 
 artifacts:
 files:
