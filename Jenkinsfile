@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('CheckOut Code'){
             steps{
-                git 'https://github.com/pallavi0304aws/product-nde-app.git'
+                git 'https://github.com/pallavi0304aws/product-node-app.git'
             }
         }
         
