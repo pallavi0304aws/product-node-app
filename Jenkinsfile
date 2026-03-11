@@ -1,44 +1,55 @@
 pipeline {
-    agent any
+ agent any
 
-    options {
-        skipDefaultCheckout(true)
-    }
+ stages {
 
-    stages {
-        stage('CheckOut Code'){
-            steps{
-                git 'https://github.com/pallavi0304aws/product-node-app.git'
-            }
-        }
-        
-        stage('Install Dependencies') {
-            steps {
-                sh '''
-                    echo "Checking Node and npm..."
-                    node -v
-                    npm -v
+ stage('Clone Repository') {
+ steps {
+     sh '''
+     rm -rf product-node-app
+     git clone https://github.com/pallavi0304aws/product-node-app.git
+     '''
+     }
+ }
 
-                    echo "Installing dependencies..."
-                    npm install     # Install dependencies
-                '''
-            }
-        }
+ stage('Install Dependencies') {
+ steps {
+ sh ''' 
+ export PATH=/opt/homebrew/bin:$PATH
+ cd product-node-app
+ echo "Checking Node version"
+ node -v
 
-        stage('Build / Test') {
-            steps {
-                sh '''
-                    echo "Running build / test..."
-                    npm test || echo "No tests defined"
-                    echo "Application build successful"
-                '''
-            }
-        }
-    }
+ echo "Checking npm version"
+ npm -v
 
-    post {
-        success { echo '🎉 PIPELINE EXECUTED SUCCESSFULLY!' }
-        failure { echo '❌ PIPELINE FAILED!' }
-        always { echo "Pipeline Execution finished"}
-    }
+ echo "Installing dependencies"
+ npm install
+ '''
+ }
+ }
+
+ stage('Build / Test') {
+ steps {
+ sh '''
+ cd product-node-app
+ npm test || echo "No tests available"
+ '''
+ }
+ }
+ }
+
+ post {
+ success {
+ echo ' PIPELINE EXECUTED SUCCESSFULLY'
+ }
+
+ failure {
+ echo ' PIPELINE FAILED'
+ }
+
+ always {
+ echo 'Pipeline finished'
+ }
+ }
 }
