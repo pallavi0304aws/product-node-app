@@ -1,36 +1,23 @@
-AWSTemplateFormatVersion: '2010-09-09'
+version: 0.2
 
-Resources:
+phases:
+pre_build:
+commands:
+- echo Logging in to Amazon ECR...
+- aws ecr get-login-password --region ap-south-1 | docker login --username AWS --password-stdin 500766169087.dkr.ecr.ap-south-1.amazonaws.com
 
-  ECSCluster:
-    Type: AWS::ECS::Cluster
-    Properties:
-      ClusterName: product-cluster
+build:
+commands:
+- echo Building Docker image...
+- docker build -t product-node-app .
 
-  TaskExecutionRole:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Statement:
-          - Effect: Allow
-            Principal:
-              Service: ecs-tasks.amazonaws.com
-            Action: sts:AssumeRole
-      ManagedPolicyArns:
-      - arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy
+post_build:
+commands:
+- echo Tagging image...
+- docker tag product-node-app:latest 500766169087.dkr.ecr.ap-south-1.amazonaws.com/product-node-app:latest
+- echo Pushing image...
+- docker push 500766169087.dkr.ecr.ap-south-1.amazonaws.com/product-node-app:latest
 
-  TaskDefinition:
-    Type: AWS::ECS::TaskDefinition
-    Properties:
-      Family: product-task
-      NetworkMode: awsvpc
-      RequiresCompatibilities:
-        - FARGATE
-      Cpu: "256"
-      Memory: "512"
-      ExecutionRoleArn: !GetAtt TaskExecutionRole.Arn
-      ContainerDefinitions:
-        - Name: product-node-app
-          Image: public.ecr.aws/t6b4v2m1/product-node-app:latest
-          PortMappings:
-            - ContainerPort: 3000
+artifacts:
+files:
+- '**/*'
