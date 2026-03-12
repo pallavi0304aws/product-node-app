@@ -1,0 +1,6 @@
+[
+{
+"name": "product-node-container-pallavi",
+"imageUri": "500766169087.dkr.ecr.ap-south-1.amazonaws.com/product-node-app:latest"
+}
+]
